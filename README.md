@@ -5,7 +5,7 @@
 Python >= 3.6<br>
 TensorFlow-GPU >= 2.0<br>
 
-To install required python packages, run `pip install -r requirements.txt`
+To install required third-party Python packages, run `pip install -r requirements.txt`
 
 
 #### Modeling

@@ -2,9 +2,22 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import StratifiedKFold, KFold
-# TFXLNetForQuestionAnsweringSimple
 
-import common._settings
+import logging
+tf.get_logger().setLevel(logging.ERROR)
+
+import warnings
+warnings.filterwarnings("ignore")
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    pass
+
 import common.model_utils as model_utils
 import common.prediction_utils as prediction_utils
 import common.ensemble as ensemble

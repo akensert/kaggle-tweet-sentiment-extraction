@@ -49,11 +49,11 @@ class Model(PreTrainedModel):
 
         self.transformer = TransformerLayer(config, name="transformer")
 
-        self.Heads = []
+        self.heads = []
         for i in range(4):
-            self.Heads.append(
+            self.heads.append(
                 Head(2, self.DROPOUT_RATE, name=f'single_head_{i}'))
-        self.WeightedAverageLayer = WeightedAverageLayer(4, name='avg_layer')
+        self.avg_layer = WeightedAverageLayer(4, name='avg_layer')
 
     @tf.function
     def call(self, inputs, **kwargs):
@@ -62,13 +62,13 @@ class Model(PreTrainedModel):
 
         start_logits, end_logits = [], []
         for i, hstate in enumerate(hidden_states[-4:]):
-            s, e = self.Heads[i](hstate, **kwargs)
+            s, e = self.heads[i](hstate, **kwargs)
             start_logits.append(s)
             end_logits.append(e)
 
         start_logits = tf.stack(start_logits, axis=-1)
         end_logits = tf.stack(end_logits, axis=-1)
 
-        start_logits = self.WeightedAverageLayer(start_logits)
-        end_logits = self.WeightedAverageLayer(end_logits)
+        start_logits = self.avg_layer(start_logits)
+        end_logits = self.avg_layer(end_logits)
         return start_logits, end_logits

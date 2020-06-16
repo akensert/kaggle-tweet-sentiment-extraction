@@ -1,3 +1,6 @@
+src/tweet-sentiment-extraction/weights/*.h5
+src/tweet-sentiment-extraction/weights/*.h5py
+
 # jupyter
 MANIFEST
 build

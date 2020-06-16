@@ -73,5 +73,5 @@ if __name__ == "__main__":
     selected_text_pred = prediction_utils.transform_to_text(
         preds_start, preds_end, text, offset, sentiment)
 
-    submission_df.loc[:, 'selected_text'] = selected_text_pred
-    submission_df.to_csv(dataset.PATH + "submission.csv", index=False)
+    # submission_df.loc[:, 'selected_text'] = selected_text_pred
+    # submission_df.to_csv("submission.csv", index=False)

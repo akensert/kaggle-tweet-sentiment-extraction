@@ -1,7 +1,6 @@
 #!/bin/sh
 
 python main.py \
-        --repl $REPL \
         --transformer $MODEL \
         --fold $FOLD \
         --num_epochs 4 \
@@ -16,8 +15,8 @@ python main.py \
         --num_hidden_states 2 \
 
 # python infer.py \
-#          --transformer bert \
+#          --transformer $MODEL \
 #          --fold $FOLD \
 #          --dropout_rate 0.0 \
-#          --rnn_units 768 \
+#          --rnn_units 384 \
 #          --num_hidden_states 2 \

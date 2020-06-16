@@ -3,7 +3,21 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import KFold
 
-import common._settings
+import logging
+tf.get_logger().setLevel(logging.ERROR)
+
+import warnings
+warnings.filterwarnings("ignore")
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    pass
+
 import common.model_utils as model_utils
 import common.prediction_utils as prediction_utils
 
@@ -47,18 +61,17 @@ if __name__ == "__main__":
     test_dataset = dataset.Generator.create(
         test_df, batch_size=32, shuffle_buffer_size=-1)
 
-    model.load_weights(dataset.PATH+'fine-tuned/' + f'model-{fold_num}.h5')
+    model.load_weights('weights/' + f'model-{fold_num}.h5')
 
     # predict test set
     preds_start, preds_end, text, _, sentiment, offset = \
         model_utils.predict(model, test_dataset, dataset.MAX_SEQUENCE_LENGTH)
 
-    np.save(
-        dataset.PATH + f'fine-tuned/predictions/preds-{fold_num}.npy',
-        np.stack([preds_start, preds_end]))
+    # np.save(f'preds-{fold_num}.npy', np.stack([preds_start, preds_end]))
 
     # decode test set and add to submission file
     selected_text_pred = prediction_utils.transform_to_text(
         preds_start, preds_end, text, offset, sentiment)
+
     submission_df.loc[:, 'selected_text'] = selected_text_pred
     submission_df.to_csv(dataset.PATH + "submission.csv", index=False)

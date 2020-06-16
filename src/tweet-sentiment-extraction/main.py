@@ -25,7 +25,6 @@ import re
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('--repl', type=int, default=0)
 parser.add_argument('--transformer', type=str, default='roberta')
 parser.add_argument('--fold', type=int, default=0)
 parser.add_argument('--num_epochs', type=int, default=3)
@@ -112,4 +111,4 @@ for fold_num, (train_idx, valid_idx) in enumerate(
 
             if score > best_score:
                 best_score = score
-                model.save_weights('weights/' + f'model-{fold_num}-{args.repl}.h5')
+                model.save_weights('weights/' + f'model-{fold_num}.h5')
